@@ -1,129 +1,265 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zenith AI | Intelligence Visuelle</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Zenith AI | Intelligence Visuelle Haute Performance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Roboto:wght@400;500;700&display=swap');
+
+        :root {
+            --accent: #8b5cf6;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #020617;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .font-montserrat {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #a78bfa, #c084fc, #6366f1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glass {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.8s ease-out backwards;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        montserrat: ['Montserrat', 'sans-serif'],
+                        roboto: ['Roboto', 'sans-serif'],
+                    },
+                    colors: {
+                        accent: '#8b5cf6',
+                        'accent-dark': '#7c3aed',
+                    }
+                }
+            }
+        }
+    </script>
 </head>
+
 <body>
-    <div class="app-container">
-        <header class="saas-header">
-            <div class="logo">
-                <span class="logo-icon">✨</span>
-                <span class="logo-text">ZENITH AI</span>
+    <div class="min-h-screen text-slate-200">
+        <!-- Header -->
+        <header class="fixed top-0 left-0 right-0 z-[1000] h-20 glass">
+            <div class="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <span class="text-3xl text-accent"><i class='bx bxs-magic-wand filter drop-shadow-[0_0_10px_rgba(139,92,246,0.5)]'></i></span>
+                    <span class="text-2xl font-montserrat tracking-tighter text-gradient">ZENITH AI</span>
+                </div>
+                <nav class="hidden md:flex items-center gap-8">
+                    <ul class="flex gap-8 list-none font-medium text-sm text-slate-400">
+                        <li><a href="#hero" class="hover:text-accent transition-colors">Accueil</a></li>
+                        <li><a href="#features" class="hover:text-accent transition-colors">Fonctionnalités</a></li>
+                        <li><a href="#tech" class="hover:text-accent transition-colors">Technologie</a></li>
+                    </ul>
+                    <a href="app.html"
+                        class="px-6 py-2 bg-white text-black rounded-xl font-bold text-sm hover:bg-slate-200 transition-all hover:-translate-y-0.5 shadow-lg">Démarrer</a>
+                </nav>
+                <!-- Mobile button -->
+                <a href="app.html" class="md:hidden p-2 bg-white text-black rounded-lg">🚀</a>
             </div>
-            <nav class="header-nav">
-                <span class="status-badge" id="app-status">Système prêt</span>
-            </nav>
         </header>
 
-        <main class="main-content">
-            <section class="hero">
-                <h1>Intelligence Visuelle Avancée</h1>
-                <p>Analysez, comprenez et extrayez l'essence de vos contenus vidéos en un clic.</p>
+        <main>
+            <!-- Hero Section -->
+            <section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden" id="hero">
+                <div class="hero-glow"></div>
+                <div class="relative z-10 text-center px-6 animate-fadeIn">
+                    <span
+                        class="inline-flex items-center px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-xs font-medium text-slate-400 mb-8 backdrop-blur-sm">
+                        Intelligence Multimodale Haute Performance
+                    </span>
+                    <h1 class="text-5xl md:text-7xl lg:text-8xl mb-6 leading-none font-montserrat tracking-tighter">
+                        Comprenez vos vidéos <br><span class="text-gradient">Comme un Humain</span>
+                    </h1>
+                    <p
+                        class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed font-light font-roboto">
+                        Zenith AI transforme n'importe quelle vidéo ou URL en un rapport narratif structuré et
+                        professionnel en combinant Vision, Audio et Langage.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="app.html"
+                            class="px-8 py-4 bg-white text-black rounded-2xl font-black text-lg hover:bg-slate-200 transition-all hover:-translate-y-1 shadow-[0_20px_50px_-12px_rgba(255,255,255,0.2)] flex items-center gap-2">
+                            Démarrer l'Outil <i class='bx bx-right-arrow-alt text-2xl'></i>
+                        </a>
+                        <a href="#features"
+                            class="px-8 py-4 bg-white/5 border border-white/10 rounded-2xl font-bold text-lg hover:bg-white/10 transition-all backdrop-blur-md">
+                            Découvrir les fonctionnalités
+                        </a>
+                    </div>
+                </div>
             </section>
 
-            <div class="vertical-stack">
-                <!-- 01. Zone d'Import -->
-                <div class="card import-card">
-                    <div class="card-header">
-                        <span class="step-num">01</span>
-                        <h2>Source du média</h2>
-                    </div>
-                    <div class="tabs">
-                        <button class="tab-btn active" data-tab="upload">Fichier</button>
-                        <button class="tab-btn" data-tab="url">URL</button>
-                    </div>
-
-                    <div class="tab-content" id="upload-tab">
-                        <label class="drop-zone" id="drop-zone">
-                            <input type="file" id="file-input" hidden accept="video/*">
-                            <div class="drop-zone-content">
-                                <span class="icon">📁</span>
-                                <p>Déposez votre vidéo ou cliquez ici</p>
-                                <span class="hint">MP4, MOV, AVI (max 500MB)</span>
-                            </div>
-                        </label>
-                    </div>
-
-                    <div class="tab-content hidden" id="url-tab">
-                        <div class="input-group">
-                            <input type="text" id="url-input" placeholder="Liens TikToks uniquement pour le moment ...">
-                            <button class="btn btn-primary" id="url-submit">Importer</button>
-                        </div>
-                    </div>
-
-                    <div id="import-status-container" class="status-container hidden">
-                        <div class="spinner-mini"></div>
-                        <div class="status-info" style="flex: 1;">
-                            <span id="import-status-text">Préparation...</span>
-                            <div class="progress-bar-container" style="margin-top: 8px; margin-bottom: 0; height: 4px;">
-                                <div id="upload-progress-bar" class="progress-bar" style="width: 0%;"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Aperçu Vidéo -->
-                    <div id="video-preview-container" class="video-preview hidden">
-                        <video id="preview-player" controls></video>
-                    </div>
+            <!-- Features Section -->
+            <section class="py-24 px-6 max-w-7xl mx-auto" id="features">
+                <div class="text-center mb-16">
+                    <span
+                        class="inline-block px-4 py-1 bg-accent/10 border border-accent/20 rounded-full text-[10px] font-black uppercase tracking-widest text-accent mb-4">Capacités</span>
+                    <h2 class="text-4xl md:text-5xl mb-4 tracking-tighter leading-tight font-montserrat">Intelligence de
+                        Pointe</h2>
+                    <p class="text-slate-400 max-w-xl mx-auto leading-relaxed font-roboto">Une synergie technologique
+                        pour une compréhension contextuelle profonde.</p>
                 </div>
 
-                <!-- 02. Prompt Personnalisé -->
-                <div class="card prompt-card disabled" id="prompt-card">
-                    <div class="card-header">
-                        <span class="step-num">02</span>
-                        <h2>Votre Prompt</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div
+                        class="glass p-10 rounded-[32px] hover:border-accent group transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-10px_rgba(139,92,246,0.3)] animate-fadeIn">
+                        <div class="text-5xl mb-6 text-accent"><i class='bx bx-import'></i></div>
+                        <h3 class="text-xl mb-3 font-montserrat">Entrée Universelle</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed font-light font-roboto">Importez vos fichiers
+                            locaux ou analysez directement via URL (YouTube, TikTok, Twitter, etc.).</p>
                     </div>
-                    <div class="prompt-area">
-                        <textarea id="custom-prompt" placeholder="Tapez votre instruction ici...">Résumer et continuer l'analyse du média</textarea>
-                        <button class="btn btn-large btn-accent" id="send-prompt-btn" disabled>
-                            GÉNÉRER L'ANALYSE
-                        </button>
+
+                    <div class="glass p-10 rounded-[32px] hover:border-accent group transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-10px_rgba(139,92,246,0.3)] animate-fadeIn"
+                        style="animation-delay: 0.1s;">
+                        <div class="text-5xl mb-6 text-accent"><i class='bx bx-show'></i></div>
+                        <h3 class="text-xl mb-3 font-montserrat">Vision Intelligence</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed font-light font-roboto">Détection d'objets et
+                            analyse de scènes en temps réel propulsée par <strong
+                                class="text-white font-bold">YOLOv8</strong>.</p>
+                    </div>
+
+                    <div class="glass p-10 rounded-[32px] hover:border-accent group transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-10px_rgba(139,92,246,0.3)] animate-fadeIn"
+                        style="animation-delay: 0.2s;">
+                        <div class="text-5xl mb-6 text-accent"><i class='bx bx-microphone'></i></div>
+                        <h3 class="text-xl mb-3 font-montserrat">Transcription Audio</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed font-light font-roboto">Conversion
+                            haute-fidélité parole-texte avec détection automatique de la langue via <strong
+                                class="text-white font-bold">Whisper</strong>.</p>
+                    </div>
+
+                    <div class="glass p-10 rounded-[32px] hover:border-accent group transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-10px_rgba(139,92,246,0.3)] animate-fadeIn"
+                        style="animation-delay: 0.3s;">
+                        <div class="text-5xl mb-6 text-accent"><i class='bx bx-brain'></i></div>
+                        <h3 class="text-xl mb-3 font-montserrat">Synthèse Narrative</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed font-light font-roboto">Génération de rapports
+                            d'analyse profonds et contextuels grâce aux derniers modèles LLM.</p>
+                    </div>
+
+                    <div class="glass p-10 rounded-[32px] hover:border-accent group transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-10px_rgba(139,92,246,0.3)] animate-fadeIn"
+                        style="animation-delay: 0.4s;">
+                        <div class="text-5xl mb-6 text-accent"><i class='bx bx-diamond'></i></div>
+                        <h3 class="text-xl mb-3 font-montserrat">Interface Premium</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed font-light font-roboto">Un tableau de bord
+                            élégant en mode sombre conçu pour une expérience utilisateur fluide.</p>
+                    </div>
+
+                    <div class="glass p-10 rounded-[32px] hover:border-accent group transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-10px_rgba(139,92,246,0.3)] animate-fadeIn"
+                        style="animation-delay: 0.5s;">
+                        <div class="text-5xl mb-6 text-accent"><i class='bx bx-bolt-circle'></i></div>
+                        <h3 class="text-xl mb-3 font-montserrat">Vitesse Extrême</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed font-light font-roboto">Extraction de frames
+                            haute vitesse avec Decord pour des résultats quasi-instantanés.</p>
                     </div>
                 </div>
+            </section>
 
-                <!-- 03. Résultat -->
-                <section class="result-section hidden" id="result-panel">
-                    <div class="card report-card">
-                        <div class="card-header flex-header">
-                            <div class="title-with-step">
-                                <span class="step-num">03</span>
-                                <h2>Analyse Zenith AI</h2>
-                            </div>
-                            <div class="action-buttons">
-                                <button class="btn btn-secondary btn-sm" id="copy-report">
-                                    Copier
-                                </button>
-                                <button class="btn btn-secondary btn-sm" id="download-report">
-                                    Télécharger
-                                </button>
-                                <button class="btn btn-primary btn-sm" id="reset-app">
-                                    Nouvelle Analyse
-                                </button>
-                            </div>
+            <!-- Tech Stack -->
+            <section class="py-24 px-6 border-t border-slate-900 bg-slate-950/30" id="tech">
+                <div class="max-w-7xl mx-auto">
+                    <div class="text-center mb-12">
+                        <span
+                            class="inline-block px-4 py-1 bg-accent/10 border border-accent/20 rounded-full text-[10px] font-black uppercase tracking-widest text-accent mb-4 whitespace-nowrap">Stack
+                            Technique</span>
+                        <h2 class="text-3xl font-montserrat tracking-tight leading-tight">Propulsé par le Meilleur de
+                            l'IA</h2>
+                    </div>
+                    <div
+                        class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-700">
+                        <div class="text-center font-montserrat tracking-tight"><span
+                                class="block text-xl font-black text-white">Gradio</span> <span
+                                class="text-[10px] text-slate-500 uppercase tracking-tighter">Web UI</span></div>
+                        <div class="text-center font-montserrat tracking-tight"><span
+                                class="block text-xl font-black text-white">Ultralytics</span> <span
+                                class="text-[10px] text-slate-500 uppercase tracking-tighter">YOLOv8</span></div>
+                        <div class="text-center font-montserrat tracking-tight"><span
+                                class="block text-xl font-black text-white">Faster-Whisper</span> <span
+                                class="text-[10px] text-slate-500 uppercase tracking-tighter">Audio</span></div>
+                        <div class="text-center font-montserrat tracking-tight"><span
+                                class="block text-xl font-black text-white">Yt-dlp</span> <span
+                                class="text-[10px] text-slate-500 uppercase tracking-tighter">Video Download</span>
                         </div>
-                        <div class="progress-bar-container">
-                            <div id="streaming-progress" class="progress-bar"></div>
-                        </div>
-                        <div class="report-content markdown-body" id="report-output">
-                            <!-- Le rapport s'affichera ici -->
+                        <div class="text-center font-montserrat tracking-tight"><span
+                                class="block text-xl font-black text-white">Decord</span> <span
+                                class="text-[10px] text-slate-500 uppercase tracking-tighter">Frame Extraction</span>
                         </div>
                     </div>
-                </section>
-            </div>
+                </div>
+            </section>
         </main>
 
-        <footer class="saas-footer">
-            <p>Conçu avec ✨ par <a href="https://www.linkedin.com/in/bessanh-shadrak-744049287/" target="_blank" rel="noopener noreferrer">Shadrak BESSANH</a></p>
+        <footer class="py-20 px-6 border-t border-slate-900 bg-black/50 overflow-hidden font-roboto">
+            <div class="max-w-7xl mx-auto text-center">
+                <div class="flex items-center justify-center gap-3 mb-6">
+                    <span class="text-2xl">✨</span>
+                    <span class="text-xl font-montserrat font-black tracking-tighter text-gradient">ZENITH AI</span>
+                </div>
+                <p class="text-slate-500 max-w-md mx-auto mb-8 text-sm font-light">High-Performance Multimodal Video
+                    Analysis & Narrative Synthesis.</p>
+                <p class="text-slate-600 text-[10px] uppercase tracking-widest">Built with ❤️ By <a
+                        href="https://www.linkedin.com/in/bessanh-shadrak-744049287/" target="_blank"
+                        class="text-accent font-bold">Shadrak BESSANH</a></p>
+            </div>
         </footer>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>

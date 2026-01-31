@@ -59,15 +59,14 @@ document.addEventListener('DOMContentLoaded', () => {
         promptCard.classList.remove('pulse-active');
     });
 
-    customPrompt.addEventListener('keydown', (e) => {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-            e.preventDefault();
-            sendPromptBtn.click();
-        }
-    });
+    // --- HELPERS ---
+    const safeAddEventListener = (el, type, handler) => {
+        if (el) el.addEventListener(type, handler);
+    };
 
     // --- CHECK-UP INITIAL ---
     async function checkBackendStatus() {
+        if (!appStatusBadge) return;
         try {
             const resp = await fetch(`${API_BASE_URL}/`);
             const data = await resp.json();
@@ -90,10 +89,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- GESTION DES ONGLETS ---
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            tabBtns.forEach(b => b.classList.remove('active'));
+            tabBtns.forEach(b => {
+                b.classList.remove('bg-slate-800', 'text-white');
+                b.classList.add('text-slate-400');
+            });
             tabContents.forEach(c => c.classList.add('hidden'));
-            btn.classList.add('active');
-            document.getElementById(`${btn.dataset.tab}-tab`).classList.remove('hidden');
+
+            btn.classList.add('bg-slate-800', 'text-white');
+            btn.classList.remove('text-slate-400');
+
+            const target = document.getElementById(`${btn.dataset.tab}-tab`);
+            if (target) target.classList.remove('hidden');
         });
     });
 
@@ -102,30 +108,32 @@ document.addEventListener('DOMContentLoaded', () => {
     // dropZone.addEventListener('click', () => fileInput.click());
 
     // Effet visuel Drag & Drop
-    ['dragenter', 'dragover'].forEach(eventName => {
-        dropZone.addEventListener(eventName, (e) => {
+    if (dropZone) {
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropZone.classList.add('dragover');
+            });
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropZone.classList.remove('border-accent', 'bg-accent/5');
+            });
+        });
+
+        dropZone.addEventListener('drop', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            dropZone.classList.add('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) handleFileUpload(files[0]);
         });
-    });
+    }
 
-    ['dragleave', 'drop'].forEach(eventName => {
-        dropZone.addEventListener(eventName, (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            dropZone.classList.remove('dragover');
-        });
-    });
-
-    dropZone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const files = e.dataTransfer.files;
-        if (files.length > 0) handleFileUpload(files[0]);
-    });
-
-    fileInput.addEventListener('change', (e) => {
+    safeAddEventListener(fileInput, 'change', (e) => {
         if (e.target.files.length > 0) handleFileUpload(e.target.files[0]);
     });
 
@@ -166,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    urlSubmit.addEventListener('click', async () => {
+    safeAddEventListener(urlSubmit, 'click', async () => {
         const url = urlInput.value.trim();
         if (!url) return;
 
@@ -183,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    urlInput.addEventListener('keydown', (e) => {
+    safeAddEventListener(urlInput, 'keydown', (e) => {
         if (e.key === 'Enter') urlSubmit.click();
     });
 
@@ -194,31 +202,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Afficher l'aperçu vidéo
         if (data.video_url) {
-            previewPlayer.src = `${API_BASE_URL}${data.video_url}`;
-            videoPreviewContainer.classList.remove('hidden');
+            if (previewPlayer) previewPlayer.src = `${API_BASE_URL}${data.video_url}`;
+            if (videoPreviewContainer) videoPreviewContainer.classList.remove('hidden');
         }
 
         // Réinitialiser les panels
-        resultPanel.classList.add('hidden');
+        if (resultPanel) resultPanel.classList.add('hidden');
 
         // On passe directement à l'étape du Prompt
         // L'extraction se fait en arrière-plan côté serveur (déjà incluse dans la réponse data.frames)
-        promptCard.classList.remove('disabled');
-        promptCard.classList.add('pulse-active');
-        sendPromptBtn.disabled = false;
+        if (promptCard) {
+            promptCard.classList.remove('opacity-40', 'grayscale', 'pointer-events-none');
+            promptCard.classList.add('pulse-active');
+        }
+        if (sendPromptBtn) sendPromptBtn.disabled = false;
         setActiveCard(promptCard);
 
         // Scroll fluide vers le prompt
         setTimeout(() => {
-            customPrompt.focus();
-            promptCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            if (customPrompt) customPrompt.focus();
+            if (promptCard) promptCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }, 600);
     }
 
     // --- ÉTAPE 2 : GÉNÉRATION DU RAPPORT (SSE) ---
     let currentEventSource = null;
 
-    sendPromptBtn.addEventListener('click', () => {
+    safeAddEventListener(sendPromptBtn, 'click', () => {
         const promptText = customPrompt.value.trim();
         if (!promptText) return;
 
@@ -227,18 +237,21 @@ document.addEventListener('DOMContentLoaded', () => {
             currentEventSource.close();
         }
 
-        sendPromptBtn.disabled = true;
-        sendPromptBtn.innerText = "GÉNÉRATION EN COURS...";
+        if (sendPromptBtn) sendPromptBtn.disabled = true;
+        if (sendPromptBtn) sendPromptBtn.innerText = "GÉNÉRATION EN COURS...";
 
-        resultPanel.classList.remove('hidden');
-        setActiveCard(resultPanel.querySelector('.card'));
-        reportOutput.innerHTML = '<div class="typing">L\'IA analyse les données visuelles et audio...</div>';
-        streamingProgress.style.width = '0%';
+        if (resultPanel) resultPanel.classList.remove('hidden');
+        const card = resultPanel ? resultPanel.querySelector('.card') : null;
+        if (card) setActiveCard(card);
+        if (reportOutput) reportOutput.innerHTML = '<div class="typing">L\'IA analyse les données visuelles et audio...</div>';
+        if (streamingProgress) streamingProgress.style.width = '0%';
 
         // Scroll vers le panel de résultat
-        setTimeout(() => {
-            resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 100);
+        if (resultPanel) {
+            setTimeout(() => {
+                resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
 
         fullReport = "";
         const encodedPrompt = encodeURIComponent(promptText);
@@ -252,11 +265,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (data.status === 'streaming') {
                 fullReport += data.text;
-                reportOutput.innerHTML = marked.parse(fullReport);
+                if (reportOutput) reportOutput.innerHTML = marked.parse(fullReport);
 
                 // Simulation de progression fluide
                 progress = Math.min(progress + 0.5, 95);
-                streamingProgress.style.width = `${progress}%`;
+                if (streamingProgress) streamingProgress.style.width = `${progress}%`;
 
                 // Auto-scroll intelligent
                 const threshold = 150;
@@ -265,25 +278,25 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
                 }
             } else if (data.message) {
-                const typingElem = reportOutput.querySelector('.typing');
+                const typingElem = reportOutput ? reportOutput.querySelector('.typing') : null;
                 if (typingElem) typingElem.innerText = `IA : ${data.message}`;
             }
 
             if (data.status === 'completed') {
                 currentEventSource.close();
                 currentEventSource = null;
-                streamingProgress.style.width = '100%';
-                sendPromptBtn.disabled = false;
-                sendPromptBtn.innerText = "RÉ-ANALYSER AVEC CE PROMPT";
+                if (streamingProgress) streamingProgress.style.width = '100%';
+                if (sendPromptBtn) sendPromptBtn.disabled = false;
+                if (sendPromptBtn) sendPromptBtn.innerText = "RÉ-ANALYSER AVEC CE PROMPT";
             }
 
             if (data.error) {
                 currentEventSource.close();
                 currentEventSource = null;
-                streamingProgress.style.width = '0%';
-                reportOutput.innerHTML = `<div class="error-msg" style="color:#ef4444; padding:20px; border:1px solid #ef4444; border-radius:12px; background:rgba(239,68,68,0.1)">Erreur IA: ${data.error}</div>`;
-                sendPromptBtn.disabled = false;
-                sendPromptBtn.innerText = "RÉESSAYER";
+                if (streamingProgress) streamingProgress.style.width = '0%';
+                if (reportOutput) reportOutput.innerHTML = `<div class="error-msg" style="color:#ef4444; padding:20px; border:1px solid #ef4444; border-radius:12px; background:rgba(239,68,68,0.1)">Erreur IA: ${data.error}</div>`;
+                if (sendPromptBtn) sendPromptBtn.disabled = false;
+                if (sendPromptBtn) sendPromptBtn.innerText = "RÉESSAYER";
             }
         };
 
@@ -292,18 +305,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentEventSource.close();
                 currentEventSource = null;
             }
-            sendPromptBtn.disabled = false;
-            sendPromptBtn.innerText = "ERREUR - RÉESSAYER";
+            if (sendPromptBtn) sendPromptBtn.disabled = false;
+            if (sendPromptBtn) sendPromptBtn.innerText = "ERREUR - RÉESSAYER";
         };
     });
 
     // --- ACTIONS FINALES ---
-    resetAppBtn.addEventListener('click', () => {
+    safeAddEventListener(resetAppBtn, 'click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         setTimeout(() => location.reload(), 500);
     });
 
-    copyBtn.addEventListener('click', () => {
+    safeAddEventListener(copyBtn, 'click', () => {
+        if (!reportOutput) return;
         navigator.clipboard.writeText(reportOutput.innerText).then(() => {
             const originalText = copyBtn.innerHTML;
             copyBtn.innerText = "Copié !";
@@ -320,9 +334,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    downloadBtn.addEventListener('click', () => {
+    safeAddEventListener(downloadBtn, 'click', () => {
         const originalText = downloadBtn.innerText;
-        downloadBtn.innerText = "GÉNÉRATION...";
+        if (downloadBtn) downloadBtn.innerText = "GÉNÉRATION...";
 
         const htmlContent = `
             <!DOCTYPE html>
@@ -358,12 +372,13 @@ document.addEventListener('DOMContentLoaded', () => {
         a.click();
 
         setTimeout(() => {
-            downloadBtn.innerText = originalText;
+            if (downloadBtn) downloadBtn.innerText = originalText;
         }, 1500);
     });
 
     // --- UTILITAIRES ---
     function showStatus(container, textElem, message, isError = false) {
+        if (!container || !textElem) return;
         container.classList.remove('hidden');
         textElem.innerText = message;
         const spinner = container.querySelector('.spinner-mini');
